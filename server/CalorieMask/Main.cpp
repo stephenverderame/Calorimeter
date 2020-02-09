@@ -13,10 +13,14 @@ int main()
 	bind(s, (SOCKADDR*)&addr, sizeof(addr));
 	int addrSz = sizeof(addr);
 	while (true) {
-		INT32 buffer;
-		if (int sz = recvfrom(s, (char*)&buffer, sizeof(buffer), 0, (SOCKADDR*)&addr, &addrSz) != SOCKET_ERROR)
+		struct {
+			INT16 errorCode;
+			INT16 co2;
+			float wnd;
+		}data;
+		if (int sz = recvfrom(s, (char*)&data, sizeof(data), 0, (SOCKADDR*)&addr, &addrSz) != SOCKET_ERROR)
 		{
-			printf("Co2: %d\n", buffer);
+			printf("Wind: %f Co2: %d Errors: %d\n", data.wnd, data.co2, data.errorCode);
 		}
 	}
 }
